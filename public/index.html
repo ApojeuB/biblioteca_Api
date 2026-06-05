@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biblioteca Virtual</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegacao principal">
+        <a class="brand" href="#catalog">
+          <span class="brand-mark">BV</span>
+          <span>
+            <strong>Biblioteca</strong>
+            <small>virtual</small>
+          </span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="#catalog">Catalogo</a>
+          <a href="#loans">Alugueis</a>
+          <a href="#send">Envio</a>
+          <a href="#suggestions">Sugestoes</a>
+        </nav>
+
+        <div class="account-panel" id="accountPanel">
+          <p class="eyebrow">Sessao</p>
+          <strong id="sessionName">Visitante</strong>
+          <button class="ghost-button" id="openAuthButton" type="button">Entrar ou registrar</button>
+          <button class="ghost-button hidden" id="logoutButton" type="button">Sair</button>
+        </div>
+      </aside>
+
+      <main>
+        <section class="hero" aria-labelledby="heroTitle">
+          <div class="hero-copy">
+            <p class="eyebrow">Acervo digital</p>
+            <h1 id="heroTitle">Biblioteca Virtual</h1>
+            <p>
+              Consulte livros, alugue exemplares, acompanhe devolucoes, solicite envio e mande sugestoes para melhorar o acervo.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-button" href="#catalog">Explorar acervo</a>
+              <a class="secondary-button" href="#suggestions">Enviar sugestao</a>
+            </div>
+          </div>
+          <div class="hero-media" aria-hidden="true">
+            <img src="/assets/library-scene.png" alt="" />
+          </div>
+        </section>
+
+        <section class="stats-grid" aria-label="Resumo da biblioteca">
+          <div>
+            <span id="bookCount">0</span>
+            <small>livros no catalogo</small>
+          </div>
+          <div>
+            <span id="availableCount">0</span>
+            <small>exemplares disponiveis</small>
+          </div>
+          <div>
+            <span id="activeLoanCount">0</span>
+            <small>emprestimos ativos</small>
+          </div>
+        </section>
+
+        <section class="toolbar-section" id="catalog">
+          <div class="section-heading">
+            <p class="eyebrow">01 Catalogo</p>
+            <h2>Acervo</h2>
+          </div>
+          <div class="toolbar">
+            <input id="searchInput" type="search" placeholder="Buscar por titulo, autor ou pais" />
+            <select id="languageFilter" aria-label="Filtrar por idioma">
+              <option value="">Todos os idiomas</option>
+            </select>
+            <button class="secondary-button" id="refreshButton" type="button">Atualizar</button>
+          </div>
+          <div class="catalog-grid" id="catalogGrid"></div>
+        </section>
+
+        <section class="split-section">
+          <div class="panel" id="loans">
+            <div class="section-heading">
+              <p class="eyebrow">02 Alugueis</p>
+              <h2>Seus emprestimos</h2>
+            </div>
+            <div class="loan-list" id="loanList"></div>
+          </div>
+
+          <form class="panel form-panel" id="bookForm">
+            <div class="section-heading">
+              <p class="eyebrow">03 Enviar livro</p>
+              <h2>Cadastrar exemplar</h2>
+            </div>
+            <label>Titulo<input name="title" required /></label>
+            <label>Autor<input name="author" required /></label>
+            <label>ISBN<input name="isbn" /></label>
+            <label>Quantidade<input name="quantity" type="number" min="1" value="1" required /></label>
+            <div class="form-row">
+              <label>Idioma<input name="language" /></label>
+              <label>Ano<input name="year" type="number" /></label>
+            </div>
+            <button class="primary-button" type="submit">Adicionar ao acervo</button>
+          </form>
+        </section>
+
+        <section class="split-section">
+          <form class="panel form-panel" id="deliveryForm">
+            <div class="section-heading" id="send">
+              <p class="eyebrow">04 Envio</p>
+              <h2>Solicitar envio</h2>
+            </div>
+            <label>Livro<select name="book" id="deliveryBookSelect" required></select></label>
+            <label>Endereco<textarea name="address" rows="4" required placeholder="Rua, numero, bairro, cidade"></textarea></label>
+            <button class="primary-button" type="submit">Registrar solicitacao</button>
+            <p class="form-note">A solicitacao fica registrada neste navegador. O back-end de entrega ainda pode ser conectado depois.</p>
+          </form>
+
+          <form class="panel form-panel" id="suggestionForm">
+            <div class="section-heading" id="suggestions">
+              <p class="eyebrow">05 Sugestoes</p>
+              <h2>Caixa de sugestao</h2>
+            </div>
+            <label>Nome<input name="name" id="suggestionName" /></label>
+            <label>E-mail<input name="email" id="suggestionEmail" type="email" /></label>
+            <label>Mensagem<textarea name="message" rows="5" required minlength="5"></textarea></label>
+            <button class="primary-button" type="submit">Enviar sugestao</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="auth-dialog" id="authDialog">
+      <form class="auth-card" id="authForm" method="dialog">
+        <button class="close-button" id="closeAuthButton" type="button" aria-label="Fechar">x</button>
+        <p class="eyebrow">Conta</p>
+        <h2 id="authTitle">Entrar</h2>
+        <div class="auth-tabs">
+          <button class="tab-button active" type="button" data-auth-mode="login">Entrar</button>
+          <button class="tab-button" type="button" data-auth-mode="register">Registrar</button>
+        </div>
+        <label class="register-only hidden">Nome<input name="name" /></label>
+        <label>E-mail<input name="email" type="email" required /></label>
+        <label>Senha<input name="password" type="password" required minlength="4" /></label>
+        <button class="primary-button" type="submit">Continuar</button>
+        <p class="form-note" id="authMessage"></p>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
